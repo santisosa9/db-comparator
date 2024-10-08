@@ -38,4 +38,10 @@ public class Database {
   public void setProcedures(List<Procedure> procedures) {
     this.procedures = procedures;
   }
+
+  public boolean equals(Database db) {
+    return tables.equals(db.getTables()) 
+      && triggers.equals(db.getTriggers()) 
+      && procedures.equals(db.getProcedures());
+  }
 }
