@@ -5,11 +5,13 @@ import java.util.List;
 
 public class Table {
     private String name;
+    private String type;
     private List<Column> columns;
     private List<Trigger> triggers;
 
-    public Table(String name, List<Column> columns,List<Trigger> triggers) {
+    public Table(String name,String type, List<Column> columns,List<Trigger> triggers) {
         this.name = name;
+        this.type = type;
         this.columns = new ArrayList<Column>();;
         this.triggers = new ArrayList<Trigger>();;
       }
@@ -21,6 +23,14 @@ public class Table {
     public void setName(String newName) {
         this.name = newName;
       }  
+
+      public String getType() {
+        return type;
+      }
+
+    public void setType(String newType) {
+        this.name = newType;
+      } 
 
     public List<Column> getColumns() {
         return columns;
