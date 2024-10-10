@@ -29,10 +29,53 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
 
   @Override
   public void setTables() {
-    // Aca va la lógica para obtener tablas en mysql
-    // this.database.setTables(tables);
-  }
+    try (Connection connection = dbConnection.connect()) {
 
+      String query = "SELECT TABLE_NAME, TABLE_TYPE FROM information_schema.TABLES WHERE TABLE_SCHEMA = ?";  //QUERY DE TABLAS
+      String columnsQuery = "SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_KEY, COLUMN_DEFAULT, EXTRA " +  //QUERY DE COLUMNAS
+      "FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
+      try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setString(1, connection.getCatalog());
+        ResultSet resultSetTables = preparedStatement.executeQuery();
+
+        List<Table> result = new ArrayList<Table>();
+        List<Column> resultColumns = new ArrayList<Column>();
+
+        while(resultSetTables.next()){
+          String tableName = resultSetTables.getString("TABLE_NAME");
+          String tableType = resultSetTables.getString("TABLE_TYPE"); //Tabla base o VIEW
+
+          
+          try(PreparedStatement columnStatement = connection.prepareStatement(columnsQuery)) {
+            columnStatement.setString(2, tableName); //Seteo el query para la tabla actual
+            ResultSet resultSetColumns = columnStatement.executeQuery();
+            while(resultSetColumns.next()){
+              String columnName = resultSetColumns.getString("COLUMN_NAME");
+              String dataType = resultSetColumns.getString("DATA_TYPE");
+              String isNullable = resultSetColumns.getString("IS_NULLABLE");
+              String columnKey = resultSetColumns.getString("COLUMN_KEY");
+              String columnDefault = resultSetColumns.getString("COLUMN_DEFAULT");
+              String extra = resultSetColumns.getString("EXTRA");
+              Column column = new Column(columnName,dataType,isNullable,columnKey,columnDefault,extra);
+              resultColumns.add(column);
+            }
+            resultSetColumns.close();
+          }catch (SQLException e) {
+            e.printStackTrace();
+          }
+          
+          Table table = new Table(tableName,tableType,resultColumns,null);
+          result.add(table);
+          resultColumns.clear();
+        }
+        resultSetTables.close();
+        this.database.setTables(result);
+      }
+  }catch (SQLException e) {
+    e.printStackTrace();
+  }  
+  }
+  
   @Override
   public void setTriggers() {
     try (Connection connection = dbConnection.connect()) {
