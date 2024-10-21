@@ -106,6 +106,47 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
 
   @Override
   public void setProcedures() {
+    try(Connection connection = dbConnection.connect()){
+      String query = "SELECT ROUTINE_NAME FROM information_schema.ROUTINES WHERE ROUTINE_SCHEMA = ?;";
+      String queryParams = "SELECT PARAMETER_NAME, PARAMETER_MODE, DATA_TYPE FROM information_schema.PARAMETERS WHERE SPECIFIC_SCHEMA = ? AND SPECIFIC_NAME = ?;";
+      
+      try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+        preparedStatement.setString(1, connection.getCatalog());
+        ResultSet resultSetRoutine = preparedStatement.executeQuery();
+
+        List<Procedure> list = new ArrayList<Procedure>();
+        ArrayList<Parametro<String,String,String>> parametros = new ArrayList<Parametro<String,String,String>>();
+        
+        while(resultSetRoutine.next()){
+          String routineName = resultSetRoutine.getString("ROUTINE_NAME");
+
+          try(PreparedStatement paramStatement = connection.prepareStatement(queryParams)){
+            paramStatement.setString(1,connection.getCatalog());
+            paramStatement.setString(2,routineName);
+            ResultSet resultSetParams = paramStatement.executeQuery();
+            
+            while(resultSetParams.next()){
+                String nameParam = resultSetParams.getString("PARAMETER_NAME");
+                String inputParam = resultSetParams.getString("PARAMETER_MODE");
+                String dataParam = resultSetParams.getString("DATA_TYPE");
+                Parametro<String,String,String> param = new Parametro(nameParam, inputParam, dataParam);
+                parametros.add(param);
+              }
+            resultSetParams.close();
+
+          } catch (SQLException e){
+            e.printStackTrace();
+          }
+          Procedure routine = new Procedure(routineName,parametros);
+          list.add(routine);
+        }
+        resultSetRoutine.close();
+        this.database.setProcedures(list);
+
+      }
+    } catch (SQLException e){
+      e.printStackTrace();
+    }
     // Aca va la lógica para obtener los procedimientos en mysql
     // this.database.setProcedures(procedures);
   }
