@@ -1,6 +1,5 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Table {
@@ -9,11 +8,11 @@ public class Table {
     private List<Column> columns;
     private List<Trigger> triggers;
 
-    public Table(String name,String type, List<Column> columns,List<Trigger> triggers) {
+    public Table(String name,String type, List<Column> columns, List<Trigger> triggers) {
         this.name = name;
         this.type = type;
-        this.columns = new ArrayList<Column>();;
-        this.triggers = new ArrayList<Trigger>();;
+        this.columns = columns;
+        this.triggers = triggers;
       }
 
     public String getName() {
@@ -48,10 +47,28 @@ public class Table {
         this.triggers = triggers;
       }   
     
-      public boolean equals(Table other) {
+      public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Table other = (Table) obj;
         return name.equals(other.getName()) 
           && columns.equals(other.getColumns()) 
+          && type.equals(other.getType())
           && triggers.equals(other.getTriggers());
       }
+
+      public String toString() {
+        String result = "{ " + "name " + name + 
+                  ", type " + type +
+                  ", columns ";
+                  for (Column col : columns) {
+                    result += col + "\n";
+                  }
+                  result += ", triggers " + triggers +
+                  "}";
+
+        return result;
+      }
+
 
 }

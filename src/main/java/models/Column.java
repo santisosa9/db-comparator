@@ -83,13 +83,13 @@ public class Column {
 
   @Override
     public String toString() {
-        return "Column{" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", isNullable='" + isNullable + '\'' +
-                ", columnKey='" + columnKey + '\'' +
-                ", columnDefault='" + columnDefault + '\'' +
-                ", extra='" + extra + '\'' +
+        return "Column {" +
+                " name " + name +
+                ", type " + type +
+                ", isNullable " + isNullable +
+                ", columnKey " + columnKey +
+                ", columnDefault " + columnDefault +
+                ", extra " + extra +
                 '}';
     }
 }

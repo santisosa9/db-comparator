@@ -7,8 +7,6 @@ public interface DatabaseBuilder {
   public void reset();
 
   public void setTables();
-
-  public void setTriggers();
   
   public void setProcedures();
   

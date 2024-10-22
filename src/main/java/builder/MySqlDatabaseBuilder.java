@@ -39,15 +39,16 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
         ResultSet resultSetTables = preparedStatement.executeQuery();
 
         List<Table> result = new ArrayList<Table>();
-        List<Column> resultColumns = new ArrayList<Column>();
-
+        
         while(resultSetTables.next()){
           String tableName = resultSetTables.getString("TABLE_NAME");
           String tableType = resultSetTables.getString("TABLE_TYPE"); //Tabla base o VIEW
-
+          
+          List<Column> resultColumns = new ArrayList<Column>();
           
           try(PreparedStatement columnStatement = connection.prepareStatement(columnsQuery)) {
-            columnStatement.setString(2, tableName); //Seteo el query para la tabla actual
+            columnStatement.setString(1, connection.getCatalog());
+            columnStatement.setString(2, tableName); 
             ResultSet resultSetColumns = columnStatement.executeQuery();
             while(resultSetColumns.next()){
               String columnName = resultSetColumns.getString("COLUMN_NAME");
@@ -64,9 +65,9 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
             e.printStackTrace();
           }
           
-          Table table = new Table(tableName,tableType,resultColumns,null);
+          List<Trigger> triggers = getTriggers(tableName);
+          Table table = new Table(tableName,tableType,resultColumns,triggers);
           result.add(table);
-          resultColumns.clear();
         }
         resultSetTables.close();
         this.database.setTables(result);
@@ -75,33 +76,35 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
     e.printStackTrace();
   }  
   }
-  
-  @Override
-  public void setTriggers() {
+
+  private List<Trigger> getTriggers(String tableName) { 
+    List<Trigger> result = new ArrayList<Trigger>();
     try (Connection connection = dbConnection.connect()) {
-      String query = "SELECT TRIGGER_NAME, EVENT_MANIPULATION AS TRIGGER_EVENT, ACTION_TIMING AS TRIGGER_TIMING FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA = ?";
+      String query = "SELECT TRIGGER_NAME, EVENT_MANIPULATION AS TRIGGER_EVENT, ACTION_TIMING AS TRIGGER_TIMING " +
+                    "FROM information_schema.TRIGGERS " +
+                    "WHERE TRIGGER_SCHEMA = ? AND EVENT_OBJECT_TABLE = ?";
 
       try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-        preparedStatement.setString(1, connection.getCatalog()); // Aca le asigna el nombre de la db a la consulta
+        preparedStatement.setString(1, connection.getCatalog()); 
+        preparedStatement.setString(2, tableName); 
+
         ResultSet resultSetTriggers = preparedStatement.executeQuery();
 
-        List<Trigger> result = new ArrayList<Trigger>();
-        
         while (resultSetTriggers.next()) {
-            String triggerName = resultSetTriggers.getString("TRIGGER_NAME");
-            String triggerEvent = resultSetTriggers.getString("TRIGGER_EVENT");
-            String triggerTiming = resultSetTriggers.getString("TRIGGER_TIMING");
-            
-            Trigger trigger = new Trigger(triggerName, triggerEvent, triggerTiming);
-            result.add(trigger);
+          String triggerName = resultSetTriggers.getString("TRIGGER_NAME");
+          String triggerEvent = resultSetTriggers.getString("TRIGGER_EVENT");
+          String triggerTiming = resultSetTriggers.getString("TRIGGER_TIMING");
+          
+          Trigger trigger = new Trigger(triggerName, triggerEvent, triggerTiming);
+          result.add(trigger);
         }
 
         resultSetTriggers.close();
-        this.database.setTriggers(result);
-      }
+      } 
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    return result;
   }
 
   @Override
@@ -115,11 +118,11 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
         ResultSet resultSetRoutine = preparedStatement.executeQuery();
 
         List<Procedure> list = new ArrayList<Procedure>();
-        ArrayList<Parametro<String,String,String>> parametros = new ArrayList<Parametro<String,String,String>>();
         
         while(resultSetRoutine.next()){
           String routineName = resultSetRoutine.getString("ROUTINE_NAME");
-
+          
+          ArrayList<Parametro> parametros = new ArrayList<Parametro>();
           try(PreparedStatement paramStatement = connection.prepareStatement(queryParams)){
             paramStatement.setString(1,connection.getCatalog());
             paramStatement.setString(2,routineName);
@@ -129,11 +132,11 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
                 String nameParam = resultSetParams.getString("PARAMETER_NAME");
                 String inputParam = resultSetParams.getString("PARAMETER_MODE");
                 String dataParam = resultSetParams.getString("DATA_TYPE");
-                Parametro<String,String,String> param = new Parametro(nameParam, inputParam, dataParam);
+                Parametro param = new Parametro(nameParam, inputParam, dataParam);
                 parametros.add(param);
               }
             resultSetParams.close();
-
+            
           } catch (SQLException e){
             e.printStackTrace();
           }
@@ -154,7 +157,6 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
   @Override
   public Database build() {
     setTables();
-    setTriggers();
     setProcedures();
     Database result = this.database;
     this.reset(); 

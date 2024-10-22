@@ -23,8 +23,10 @@ public class Trigger {
     return triggerTiming;
   }
 
-  public boolean equals(Trigger other) {
-    if (other == null) return false; 
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Trigger other = (Trigger) obj;
     return name.equals(other.getName()) && triggerEvent.equals(other.getTriggerEvent()) && triggerTiming.equals(other.getTriggerTiming());
   }
 

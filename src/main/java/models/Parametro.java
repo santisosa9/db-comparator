@@ -1,41 +1,63 @@
 package models;
 
 /*
- * La clase Tupla tendra la informacion de los parametros de los procedimientos.
+ * La clase Parametro tendra la informacion de los parametros de los procedimientos.
  */
-public class Parametro<A,B,C> {
+public class Parametro {
 
-  private A name_param; // Nombre del parametro.
-  private B type_param; // Tipo de entrada del parametro. 
-  private C data_param; // Tipo de dato del parametro.
+  private String name_param; // Nombre del parametro.
+  private String type_param; // Tipo de entrada del parametro. 
+  private String data_param; // Tipo de dato del parametro.
 
-  public Parametro(A name,B type, C data){
+  public Parametro(String name, String type, String data) {
     name_param = name;
     type_param = type;
     data_param = data;
   }
   
-  public A getName(){
+  public String getName() {
     return name_param;
   }
 
-  public B getType(){
+  public String getType() {
     return type_param;
   }
 
-  public C getData(){
+  public String getData() {
     return data_param;
   }
 
-  public void setType(A new_type){
-    this.name_param = new_type;
+  public void setName(String new_name) {
+    this.name_param = new_name;
   }
 
-  public void setName(B new_name){
-    this.type_param = new_name;
+  public void setType(String new_type) {
+    this.type_param = new_type;
   }
 
-  public void setData(C new_data){
+  public void setData(String new_data) {
     this.data_param = new_data;
+  }
+
+  @Override
+  public String toString() {
+    return "Parametro{" +
+           "name_param='" + name_param + '\'' +
+           ", type_param='" + type_param + '\'' +
+           ", data_param='" + data_param + '\'' +
+           '}';
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;  // Verifica si es el mismo objeto
+    if (obj == null || getClass() != obj.getClass()) return false;  // Verifica si es null o de clase diferente
+
+    Parametro other = (Parametro) obj;  // Castea el objeto al tipo Parametro
+
+    // Compara cada uno de los atributos para asegurarse que sean iguales
+    return (name_param.equals(other.getName()))
+           && (type_param.equals(other.getType()))
+           && (data_param.equals(other.getData()));
   }
 }

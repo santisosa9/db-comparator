@@ -6,12 +6,10 @@ import java.util.List;
 public class Database {
 
   private List<Table> tables;
-  private List<Trigger> triggers;
   private List<Procedure> procedures;
 
   public Database() {
     tables = new ArrayList<Table>();
-    triggers = new ArrayList<Trigger>();
     procedures = new ArrayList<Procedure>();
   }
 
@@ -23,14 +21,6 @@ public class Database {
     this.tables = tables;
   }
 
-  public List<Trigger> getTriggers() {
-    return triggers;
-  }
-
-  public void setTriggers(List<Trigger> triggers) {
-    this.triggers = triggers;
-  }
-
   public List<Procedure> getProcedures() {
     return procedures;
   }
@@ -39,9 +29,12 @@ public class Database {
     this.procedures = procedures;
   }
 
-  public boolean equals(Database db) {
-    return tables.equals(db.getTables()) 
-      && triggers.equals(db.getTriggers()) 
-      && procedures.equals(db.getProcedures());
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Database other = (Database) obj;
+    return tables.equals(other.getTables()) 
+      && procedures.equals(other.getProcedures());
   }
 }
