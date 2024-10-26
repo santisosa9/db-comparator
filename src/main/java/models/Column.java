@@ -81,6 +81,60 @@ public class Column {
             ((extra == null && other.getExtra() == null) || (extra != null && extra.equals(other.getExtra())));
   }
 
+  public String WriteDifferences(Column column1,Column column2){
+    String result = "Differences found: \\n";
+
+    if(!column1.getName().equals(column2.getName())){
+       result= result + "-Different Columns \\n" + //
+                        "name of the first column:" + column1.getName() + "\\n" +
+                        "name of the second column:" + column2.getName();
+    }else{
+      boolean equals = true;
+      //Comparacion de tipos
+      if(!column1.getType().equals(column2.getType())){
+        result= result + "-Different Types \\n" + //
+                          "type of the first column:" + column1.getType()  + "\\n" +
+                          "type of the second column:" + column2.getType();
+        equals= false;                  
+      }
+      //Comparacion de IsNullable
+      if(!column1.getIsNullable().equals(column2.getIsNullable())){
+        result= result + "-Different Nullable conditions \\n" + //
+                          "IsNullable of the first column:" + column1.getIsNullable()  + "\\n" +
+                          "IsNullable of the second column:" + column2.getIsNullable();
+        equals= false;                  
+      }
+      //Comparacion de Collumn Key
+      if(!column1.getColumnKey().equals(column2.getColumnKey())){
+        result= result + "-Different Column Key \\n" + //
+                          "Key of the first column:" + column1.getColumnKey()  + "\\n" +
+                          "Key of the second column:" + column2.getColumnKey();
+        equals= false;                  
+      }
+      //Comparacion de Default
+      if(!column1.getColumnDefault().equals(column2.getColumnDefault())){
+        result= result + "-Different Defaults \\n" + //
+                          "Default of the first column:" + column1.getColumnDefault()  + "\\n" +
+                          "Default of the second column:" + column2.getColumnDefault();
+        equals= false;                  
+      }
+      //Comparacion de extra
+      if(!column1.getExtra().equals(column2.getExtra())){
+        result= result + "-Different Extra info \\n" + //
+                          "Extra of the first column:" + column1.getColumnDefault()  + "\\n" +
+                          "Extra of the second column:" + column2.getColumnDefault();
+        equals= false;                  
+      }
+      
+      if(equals){
+        result= "No differences found";
+      }
+    }
+
+    return result;
+  }
+
+
   @Override
     public String toString() {
         return "Column {" +
