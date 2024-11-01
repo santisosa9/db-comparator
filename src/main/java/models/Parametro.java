@@ -39,6 +39,35 @@ public class Parametro {
     this.data_param = new_data;
   }
 
+  public String WriteDifferences(Parametro other){
+    String result = "Different found: \\n";
+    boolean equals = true;
+    if(name_param.equals(other.getName())){
+      result= result + "-Different Names \\n" + //
+                      "name of the first parameter:" +this.getName() + "\n" +
+                      "name of the second parameter:" + other.getName() + "\n";
+      equals = false;
+    }
+    if(type_param.equals(other.getType())){
+      result= result + "-Different Types \\n" + //
+                        "type of the first parameter:" +this.getType() + "\n" +
+                        "type of the second pameter:" + other.getType() + "\n";
+      equals = false;
+    }
+    if(data_param.equals(other.getData())){
+      result= result + "-Different Dates \\n" + //
+                        "Data of the first parameter:" +this.getData() + "\n" +
+                        "Data of the second pameter:" + other.getData() + "\n";
+      equals = false;
+    }
+
+    if(equals){
+      result = "No differents found";
+    }
+
+    return result;
+  }
+
   @Override
   public String toString() {
     return "Parametro{" +

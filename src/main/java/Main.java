@@ -8,6 +8,7 @@ import models.Procedure;
 import models.Table;
 import models.Trigger;
 import models.Column;
+import models.Par;
 
 public class Main {
   
@@ -16,10 +17,10 @@ public class Main {
     String username = "root";
     String password = "root";
     String host = "localhost:3306";
-    String databaseName = "proyectobdd2";
+    String databaseName = "practico1";
 
     DatabaseBuilder dbBuilder = new MySqlDatabaseBuilder(username, password, host, databaseName);
-    DatabaseBuilder dbBuilder2 = new MySqlDatabaseBuilder(username, password, host, "bdd2_ejercicio_1_b");
+    DatabaseBuilder dbBuilder2 = new MySqlDatabaseBuilder(username, password, host, "ciudad");
     Database db1 = dbBuilder.build();
     Database db2 = dbBuilder2.build();
 
@@ -51,6 +52,29 @@ public class Main {
     }
     //Agregamos las tablas que faltan de la db2, las que tienen nombre igual ya fueron eliminadas
     notequalTables.addAll(tablesdb2);
+    
+
+    List<Procedure> proceduresdb1 = db1.getProcedures();
+    List<Procedure> proceduresdb2 = db2.getProcedures();
+
+    List<Par<Procedure,Procedure>> equalProcedures = new ArrayList<Par<Procedure,Procedure>>();
+    List<Procedure> notEqualsProcedures = new ArrayList<>();
+
+    for(Procedure proceduredb1 : proceduresdb1){
+      boolean equal = false;
+      for(Procedure proceduredb2 : proceduresdb2){
+        if(proceduredb1.getNameProcedure().equals(proceduredb2.getNameProcedure())){
+          Par<Procedure,Procedure> par = new Par<Procedure,Procedure>(proceduredb1, proceduredb2);
+          equalProcedures.add(par);
+          equal = true;
+          break;
+        }
+      }
+      if(!equal){
+        notEqualsProcedures.add(proceduredb1);
+      }
+    }
+    notEqualsProcedures.addAll(proceduresdb2);
   }
 
 }

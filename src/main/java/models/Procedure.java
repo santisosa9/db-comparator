@@ -1,5 +1,6 @@
 package models;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Procedure{
 
@@ -34,6 +35,27 @@ public class Procedure{
     if (obj == null || getClass() != obj.getClass()) return false;
     Procedure other = (Procedure) obj;
     return nameProcedure.equals(other.getNameProcedure()) && params.equals(other.getParams());
+  }
+
+
+  public String WriteDifferences(Procedure other){
+    String result = "Differences found: \\n";
+
+    ArrayList<Parametro> otherParams = other.params;
+    List<Parametro> notEqualsParams = new ArrayList<>();
+
+    for(Parametro param : params){
+      for(Parametro otherParam : otherParams){
+        if(param.equals(otherParam)){
+          params.remove(param);
+          otherParams.remove(otherParam);
+        }
+      }
+    }
+    notEqualsParams.addAll(params);
+    notEqualsParams.addAll(otherParams);
+
+    return result;
   }
 
   @Override
