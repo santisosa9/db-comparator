@@ -39,7 +39,8 @@ public class Procedure{
 
 
   public String WriteDifferences(Procedure other){
-    String result = "Differences found: \\n";
+    String result = "Names of procedures equals with " + nameProcedure +" but in parameters" + 
+                    "Differences found: \\n";
 
     ArrayList<Parametro> otherParams = other.params;
     List<Parametro> notEqualsParams = new ArrayList<>();
