@@ -7,7 +7,6 @@ import models.Database;
 import models.Procedure;
 import models.Table;
 import models.Trigger;
-import models.Column;
 import models.Par;
 
 public class Main {
@@ -29,7 +28,7 @@ public class Main {
     List<Table> tablesdb1 = db1.getTables();
     List<Table> tablesdb2 = db2.getTables();
     //Tablas que comparten nombre, van de a dos. Podemos usar tuplas
-    List<Table> equalnamedTables= new ArrayList<>();
+    List<Par<Table,Table>> equalNamedTables = new ArrayList<Par<Table,Table>>();
     //Tablas que NO comparten nombre, serian las que sobran.
     List<Table> notequalTables= new ArrayList<>();
 
@@ -38,8 +37,8 @@ public class Main {
       for(Table tabledb2: tablesdb2){
         //Si comparten nombre las agregamos a las que tienen que ser comparadas
         if(tabledb1.getName().equals(tabledb2.getName())){
-          equalnamedTables.add(tabledb1);
-          equalnamedTables.add(tabledb2);
+          Par<Table,Table> par = new Par<Table,Table>(tabledb1, tabledb2);
+          equalNamedTables.add(par);
           tablesdb2.remove(tabledb2);
           equal=true;
           break;
@@ -53,6 +52,16 @@ public class Main {
     //Agregamos las tablas que faltan de la db2, las que tienen nombre igual ya fueron eliminadas
     notequalTables.addAll(tablesdb2);
     
+    String TableComparison= "Comparacion de tablas iguales:  \\n";
+    //Ciclado de tablas iguales
+    for(Par<Table,Table> tables : equalNamedTables){
+      TableComparison= TableComparison + tables.primero().WriteDifferences(tables.segundo());
+    }
+
+    TableComparison= TableComparison + "Tablas sobrantes: \\n";
+    for(Table table : notequalTables){
+      TableComparison= TableComparison + table.toString();
+    }
 
     List<Procedure> proceduresdb1 = db1.getProcedures();
     List<Procedure> proceduresdb2 = db2.getProcedures();
