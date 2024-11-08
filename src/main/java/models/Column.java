@@ -1,12 +1,14 @@
 package models;
 
 public class Column {
-  private String name;
-  private String type;
+    private String name;
+    private String type;
+    private String columnKey; //PRI: Primary Key, UNI: UNIQUE, MUL: Foreign key or multiple index, null: No key constraint
     
-  public Column(String name, String type) {
-    this.name = name;
-    this.type = type;
+    public Column(String name, String type,String columnKey) {
+      this.name = name;
+      this.type = type;
+      this.columnKey = columnKey;
   }
     
   public String getName() {
@@ -17,12 +19,23 @@ public class Column {
     return type;
   }
 
+
+  public String getColumnKey() {
+    return columnKey;
+  }
+
+
   public void setName(String newName) {
     this.name = newName;
   }
 
   public void setType(String newType) {
     this.type = newType;
+  }
+
+
+  public void setColumnKey(String columnKey) {
+    this.columnKey = columnKey;
   }
 
   @Override

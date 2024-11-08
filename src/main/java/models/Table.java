@@ -9,14 +9,48 @@ public class Table {
   private String name;
   private String type;
   private List<Column> columns;
+  private List <Column> PrimaryKeyColumns;
+  private List <Column> UniqueKeyColumns;
+  private List <Column> ForeignKeyColumns;
   private List<Trigger> triggers;
 
-  public Table(String name,String type, List<Column> columns, List<Trigger> triggers) {
+  public Table(String name,String type, List<Column> columns, List<Trigger> triggers,List<Column> PrimarykeyColumns,List<Column> UniqueKeyColumns,List<Column> ForeignKeyColumns) {
     this.name = name;
     this.type = type;
     this.columns = columns;
     this.triggers = triggers;
+    this.PrimaryKeyColumns = PrimarykeyColumns;
+    this.UniqueKeyColumns=UniqueKeyColumns;
+    this.ForeignKeyColumns=ForeignKeyColumns;
   }
+
+  public List<Column> getPrimaryKeyColumns() {
+    return PrimaryKeyColumns;
+  }
+    
+  public void setPrimaryKeyColumns(List<Column> PrimaryKeyColumns) {
+    this.PrimaryKeyColumns = PrimaryKeyColumns;
+  }
+
+  public List<Column> getUniqueKeyColumns() {
+    return UniqueKeyColumns;
+  }
+    
+  public void setUniqueKeyColumns(List<Column> UniqueKeyColumns) {
+    this.UniqueKeyColumns = UniqueKeyColumns;
+  }
+
+
+  public List<Column> getForeignKeyColumns() {
+    return ForeignKeyColumns;
+  }
+
+  public void setForeignKeyColumns(List<Column> ForeignKeyColumns) {
+    this.ForeignKeyColumns = ForeignKeyColumns;
+  }
+
+
+
 
   public String getName() {
     return name;
@@ -69,6 +103,43 @@ public class Table {
     }
     result += getColumnsDifference(other);
     result += getTriggersDifference(other);
+    return result;
+  }
+
+  public String WriteKeyDifferences(Table other){
+    String result = "";
+    List<Column> Table2KeyColumns = new ArrayList<Column>();
+    //Primary Key comparison 
+    Table2KeyColumns=other.getPrimaryKeyColumns();
+    for(Column table1: PrimaryKeyColumns){
+      for(Column table2: Table2KeyColumns){
+        if(name.equals(table2.getName())){
+          result += table1.WriteDifferences(table2);
+          break;
+        }
+      }
+    }
+    //Foreign Key Comparison
+    Table2KeyColumns=other.getForeignKeyColumns();
+    for(Column table1: ForeignKeyColumns){
+      for(Column table2: Table2KeyColumns){
+        if(name.equals(table2.getName())){
+          result += table1.WriteDifferences(table2);
+          break;
+        }
+      }
+    }
+    //Unique Key Comparison
+    Table2KeyColumns=other.getUniqueKeyColumns();
+    for(Column table1: UniqueKeyColumns){
+      for(Column table2: Table2KeyColumns){
+        if(name.equals(table2.getName())){
+          result += table1.WriteDifferences(table2);
+          break;
+        }
+      }
+    }
+
     return result;
   }
 

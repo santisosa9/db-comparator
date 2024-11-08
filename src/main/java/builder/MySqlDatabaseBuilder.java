@@ -44,6 +44,9 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
           String tableType = resultSetTables.getString("TABLE_TYPE"); //Tabla base o VIEW
           
           List<Column> resultColumns = new ArrayList<Column>();
+          List<Column> PrimarykeyColumns = new ArrayList<Column>();
+          List<Column> ForeignkeyColumns = new ArrayList<Column>();
+          List<Column> UniquekeyColumns = new ArrayList<Column>();
           
           try(PreparedStatement columnStatement = connection.prepareStatement(columnsQuery)) {
             columnStatement.setString(1, connection.getCatalog());
@@ -52,7 +55,20 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
             while(resultSetColumns.next()){
               String columnName = resultSetColumns.getString("COLUMN_NAME");
               String dataType = resultSetColumns.getString("DATA_TYPE");
-              Column column = new Column(columnName,dataType);
+              String columnKey = resultSetColumns.getString("COLUMN_KEY");
+              Column column = new Column(columnName,dataType,columnKey);
+              //If its foreign key
+              if(column.getColumnKey() == "MUL"){
+                ForeignkeyColumns.add(column);
+              }
+              //If its primary key
+              if(column.getColumnKey() == "PRI"){
+                PrimarykeyColumns.add(column);
+              }  
+              //If its Unique key
+              if(column.getColumnKey() == "UNI"){
+                UniquekeyColumns.add(column);
+              }    
               resultColumns.add(column);
             }
             resultSetColumns.close();
@@ -61,7 +77,7 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
           }
           
           List<Trigger> triggers = getTriggers(tableName);
-          Table table = new Table(tableName,tableType,resultColumns,triggers);
+          Table table = new Table(tableName,tableType,resultColumns,triggers,PrimarykeyColumns,UniquekeyColumns,ForeignkeyColumns);
           result.add(table);
         }
         resultSetTables.close();
