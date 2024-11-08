@@ -53,11 +53,7 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
             while(resultSetColumns.next()){
               String columnName = resultSetColumns.getString("COLUMN_NAME");
               String dataType = resultSetColumns.getString("DATA_TYPE");
-              String isNullable = resultSetColumns.getString("IS_NULLABLE");
-              String columnKey = resultSetColumns.getString("COLUMN_KEY");
-              String columnDefault = resultSetColumns.getString("COLUMN_DEFAULT");
-              String extra = resultSetColumns.getString("EXTRA");
-              Column column = new Column(columnName,dataType,isNullable,columnKey,columnDefault,extra);
+              Column column = new Column(columnName,dataType);
               resultColumns.add(column);
             }
             resultSetColumns.close();

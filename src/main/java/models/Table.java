@@ -4,162 +4,165 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Table {
-    private String name;
-    private String type;
-    private List<Column> columns;
-    private List<Trigger> triggers;
+  private String name;
+  private String type;
+  private List<Column> columns;
+  private List<Trigger> triggers;
 
-    public Table(String name,String type, List<Column> columns, List<Trigger> triggers) {
-        this.name = name;
-        this.type = type;
-        this.columns = columns;
-        this.triggers = triggers;
-      }
+  public Table(String name,String type, List<Column> columns, List<Trigger> triggers) {
+    this.name = name;
+    this.type = type;
+    this.columns = columns;
+    this.triggers = triggers;
+  }
 
-    public String getName() {
-        return name;
-      }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String newName) {
-        this.name = newName;
-      }  
+  public void setName(String newName) {
+    this.name = newName;
+  }  
 
-      public String getType() {
-        return type;
-      }
+  public String getType() {
+    return type;
+  }
 
-    public void setType(String newType) {
-        this.name = newType;
-      } 
+  public void setType(String newType) {
+    this.name = newType;
+  } 
 
-    public List<Column> getColumns() {
-        return columns;
-      }
+  public List<Column> getColumns() {
+    return columns;
+  }
     
-      public void setColumns(List<Column> columns) {
-        this.columns = columns;
+  public void setColumns(List<Column> columns) {
+    this.columns = columns;
+  }
+
+  public List<Trigger> getTriggers() {
+    return triggers;
+  }
+
+  public void setTriggers(List<Trigger> triggers) {
+    this.triggers = triggers;
+  }   
+
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Table other = (Table) obj;
+    return name.equals(other.getName()) 
+      && columns.equals(other.getColumns()) 
+      && type.equals(other.getType())
+      && triggers.equals(other.getTriggers());
+  }
+
+  public String WriteDifferences(Table other) {
+    String result = "";
+    if (!type.equals(other.getType())) {
+      result += "Different Types \n" + 
+                "* Type of the first column: " + type  + "\n" +
+                "* Type of the second column: " + other.getType() + "\n";              
+    }
+    result += getColumnsDifference(other);
+    result += getTriggersDifference(other);
+    return result;
+  }
+
+  private String getTriggersDifference(Table other) {
+    List<Trigger> otherTriggers = new ArrayList<Trigger>(other.getTriggers());
+    List<Par<Trigger,Trigger>> equalNamedTriggers = new ArrayList<Par<Trigger, Trigger>>();
+    List<Trigger> differentTriggers1 = new ArrayList<Trigger>();
+    List<Trigger> differentTriggers2 = new ArrayList<Trigger>();
+
+    boolean equal;
+    for (Trigger t1: triggers) {
+      equal = false;
+      for (Trigger t2 : otherTriggers) {
+        if (t1.getName().equals(t2.getName())) {
+          Par<Trigger, Trigger> par = new Par<Trigger,Trigger>(t1, t2);
+          equalNamedTriggers.add(par);
+          otherTriggers.remove(t2);
+          equal = true;
+          break;
+        } 
       }
+      if (!equal) {
+        differentTriggers1.add(t1);
+      }
+    }
+    differentTriggers2.addAll(otherTriggers);
+
+    String result = "";
+
     
-      public List<Trigger> getTriggers() {
-        return triggers;
+    if (differentTriggers1.size() > 0) {
+      result += "Triggers sobrantes de la tabla " + name + ": \n";
+      for (Trigger t : differentTriggers1) {
+        result += "* " + t.getName() + "\n";
       }
+    }
+
+    for(Par<Trigger,Trigger> par : equalNamedTriggers){
+      result += par.primero().WriteDifferences(par.segundo());
+    }
+
+    if (differentTriggers2.size() > 0) {
+      result += "Triggers sobrantes de la tabla " + other.getName() + ": \n";
+      for (Trigger t : differentTriggers2) {
+        result += "* " + t.getName() + "\n";
+      }
+    }
     
-      public void setTriggers(List<Trigger> triggers) {
-        this.triggers = triggers;
-      }   
+    return result;
+  }
+
+  private String getColumnsDifference(Table other) {
+    List<Column> otherColumns = new ArrayList<Column>(other.getColumns());
+    List<Par<Column, Column>> equalNamedColumns = new ArrayList<Par<Column, Column>>();
+    List<Column> differentColumns1 = new ArrayList<Column>();
+    List<Column> differentColumns2 = new ArrayList<Column>();
+
+    boolean equal;
+    for (Column c1 : columns) {
+      equal = false;
+      for (Column c2 : otherColumns) {
+        if (c1.getName().equals(c2.getName())) {
+          Par<Column, Column> columnPair = new Par<Column,Column>(c1, c2);
+          equalNamedColumns.add(columnPair);
+          otherColumns.remove(c2);
+          equal = true;
+          break;
+        } 
+      }
+      if (!equal) {
+        differentColumns1.add(c1);
+      }
+    }
+    differentColumns2.addAll(otherColumns);
+
+    String result = "";
+
+    if (differentColumns1.size() > 0) {
+      result += "Columnas sobrantes de la tabla " + name + ": \n";
+      for (Column c : differentColumns1) {
+        result += "* " + c.getName() + "\n";
+      }
+    }
+
+    for(Par<Column,Column> columnPair : equalNamedColumns){
+      result += columnPair.primero().WriteDifferences(columnPair.segundo());
+    }
+
+    if (differentColumns2.size() > 0) {
+      result += "Columnas sobrantes de la tabla " + other.getName() + ": \n";
+      for (Column c : differentColumns2) {
+        result += "* " + c.getName() + "\n";
+      }
+    }
     
-      public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Table other = (Table) obj;
-        return name.equals(other.getName()) 
-          && columns.equals(other.getColumns()) 
-          && type.equals(other.getType())
-          && triggers.equals(other.getTriggers());
-      }
-
-      public String WriteDifferences(Table table2){
-        String result = "Differences found: \\n";
-
-          //Comparacion de tipos
-          if(this.getType().equals(table2.getType())){
-            result= result + "-Different Types \\n" + //
-                              "type of the first column:" +this.getType()  + "\\n" +
-                              "type of the second column:" + table2.getType();              
-          }
-          //Comparacion de columnas
-          List<Column> columnstable1 = this.getColumns(); /* Esto no es necesario podemos acceder 
-                                                            directamente al atributo columns de esta instancia */ 
-          List<Column> columnstable2 = table2.getColumns(); /* Estamos asignando la referencia en lugar 
-                                                              de hacer una copia, capaz no conviene */
-          //Columnas que comparten nombre, van de a dos. Podemos usar tuplas
-          List<Column> equalNamedColumns= new ArrayList<>();
-          //Tablas que NO comparten nombre, serian las que sobran.
-          List<Column> notequalColumns= new ArrayList<>(); /* Trabajar con una unica lista que lleva las columnas 
-                                                            distintas de ambas tablasa dificulta el reporte. ¿Como
-                                                            sabemos a que tabla pertenece? */
-          for(Column column1: columnstable1){
-            boolean equal= false;
-            for(Column column2: columnstable2){
-              //Si comparten nombre las agregamos a las que tienen que ser comparadas
-              if(column1.getName().equals(column2.getName())){
-                equalNamedColumns.add(column1);
-                equalNamedColumns.add(column2);
-                columnstable2.remove(column2);
-                equal=true;
-                break;
-              } 
-            }
-            //Si no se encontro ningun igual lo agregamos a notequal
-            if(!equal){
-              notequalColumns.add(column1);
-            }
-          }
-          //Agregamos las tablas que faltan de la db2, las que tienen nombre igual ya fueron eliminadas
-          notequalColumns.addAll(columnstable2);
-
-        result += getTriggerDifferences(table2.getTriggers());
-          
-        return result;
-      }
-
-      private String getTriggerDifferences(List<Trigger> _otherTriggers) {
-        List<Trigger> otherTriggers = new ArrayList<Trigger>(_otherTriggers);
-        List<Par<Trigger,Trigger>> equalNamedTriggers = new ArrayList<Par<Trigger, Trigger>>();
-        List<Trigger> differentTriggers1 = new ArrayList<Trigger>();
-        List<Trigger> differentTriggers2 = new ArrayList<Trigger>();
-        for (Trigger t1: triggers) {
-          boolean equal = false;
-          for (Trigger t2 : otherTriggers) {
-            if (t1.getName().equals(t2.getName())) {
-              Par<Trigger, Trigger> par = new Par<Trigger,Trigger>(t1, t2);
-              equalNamedTriggers.add(par);
-              otherTriggers.remove(t2);
-              equal = true;
-              break;
-            } 
-          }
-          if (!equal) {
-            differentTriggers1.add(t1);
-          }
-        }
-        differentTriggers2.addAll(otherTriggers);
-
-        String result = "";
-
-        for(Par<Trigger,Trigger> par : equalNamedTriggers){
-          result += par.primero().WriteDifferences(par.segundo());
-        }
-
-        if (differentTriggers1.size() > 0) {
-          result += "Triggers sobrantes de la primera tabla: \n";
-          for (Trigger t : differentTriggers1) {
-            result += "* " + t.getName() + "\n";
-          }
-        }
-
-        if (differentTriggers2.size() > 0) {
-          result += "Triggers sobrantes de la segunda tabla: \n";
-          for (Trigger t : differentTriggers2) {
-            result += "* " + t.getName() + "\n";
-          }
-        }
-        
-        return result;
-      }
-
-      public String toString() {
-        String result = "{ " + "name " + name + 
-                  ", type " + type +
-                  ", columns ";
-                  for (Column col : columns) {
-                    result += col + "\n";
-                  }
-                  result += ", triggers " + triggers +
-                  "}";
-
-        return result;
-      }
-
+    return result;
+  }
 
 }

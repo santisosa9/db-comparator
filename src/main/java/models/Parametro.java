@@ -40,41 +40,27 @@ public class Parametro {
   }
 
   public String WriteDifferences(Parametro other){
-    String result = "Different found: \\n";
-    boolean equals = true;
-    if(name_param.equals(other.getName())){
-      result= result + "-Different Names \\n" + //
-                      "name of the first parameter:" +this.getName() + "\n" +
-                      "name of the second parameter:" + other.getName() + "\n";
-      equals = false;
-    }
-    if(type_param.equals(other.getType())){
-      result= result + "-Different Types \\n" + //
-                        "type of the first parameter:" +this.getType() + "\n" +
-                        "type of the second pameter:" + other.getType() + "\n";
-      equals = false;
-    }
-    if(data_param.equals(other.getData())){
-      result= result + "-Different Dates \\n" + //
-                        "Data of the first parameter:" +this.getData() + "\n" +
-                        "Data of the second pameter:" + other.getData() + "\n";
-      equals = false;
+    String result = "";
+
+    if (!name_param.equals(other.getName())) {
+      result += "Different Names \n" +
+                "* Name of the first parameter: " + name_param + "\n" +
+                "* Name of the second parameter: " + other.getName() + "\n";
     }
 
-    if(equals){
-      result = "No differents found";
+    if (!type_param.equals(other.getType())) {
+      result += "Different Types \n" + 
+                "* Type of the first parameter: " + type_param + "\n" +
+                "* Type of the second pameter: " + other.getType() + "\n";
+    }
+
+    if (!data_param.equals(other.getData())) {
+      result += "Different Dates \\n" + //
+                "* Data of the first parameter: " + data_param + "\n" +
+                "* Data of the second pameter: " + other.getData() + "\n";
     }
 
     return result;
-  }
-
-  @Override
-  public String toString() {
-    return "Parametro{" +
-           "name_param='" + name_param + '\'' +
-           ", type_param='" + type_param + '\'' +
-           ", data_param='" + data_param + '\'' +
-           '}';
   }
 
   @Override

@@ -37,35 +37,57 @@ public class Procedure{
     return nameProcedure.equals(other.getNameProcedure()) && params.equals(other.getParams());
   }
 
-
   public String WriteDifferences(Procedure other){
-    String result = "Names of procedures equals with " + nameProcedure +" but in parameters" + 
-                    "Differences found: \\n";
-
-    ArrayList<Parametro> otherParams = other.params;
-    List<Parametro> notEqualsParams = new ArrayList<>();
-
-    for(Parametro param : params){
-      for(Parametro otherParam : otherParams){
-        if(param.equals(otherParam)){
-          params.remove(param);
-          otherParams.remove(otherParam);
-        }
-      }
-    }
-    notEqualsParams.addAll(params);
-    notEqualsParams.addAll(otherParams);
-
+    String result = "";
+    result += getParamsDifference(other.getParams());
     return result;
   }
 
-  @Override
-  public String toString() {
-      return "Procedure {" +
-              " nameProcedure " + nameProcedure +
-              ", params " + params +
-              '}';
-  }
+  private String getParamsDifference(List<Parametro> _otherParams) {
+    List<Parametro> otherParams = new ArrayList<Parametro>(_otherParams);
+    List<Par<Parametro,Parametro>> equalNamedParams = new ArrayList<Par<Parametro,Parametro>>();
+    List<Parametro> differentParams1 = new ArrayList<Parametro>();
+    List<Parametro> differentParams2 = new ArrayList<Parametro>();
 
+    boolean equal;
+    for (Parametro p1 : params) {
+      equal = false;
+      for (Parametro p2 : otherParams) {
+        if (p1.getName().equals(p2.getName())) {
+          Par<Parametro,Parametro> paramPair = new Par<Parametro,Parametro>(p1, p2);
+          equalNamedParams.add(paramPair);
+          otherParams.remove(p2);
+          equal = true;
+          break;
+        }
+      }
+      if (!equal) {
+        differentParams1.add(p1);
+      }
+    }
+    differentParams2.addAll(otherParams);
+
+    String result = "";
+    
+    if (differentParams1.size() > 0) {
+      result += "Parametros sobrantes del primer procedimiento: \n";
+      for (Parametro p : differentParams1) {
+        result += "* " + p.getName() + "\n";
+      }
+    }
+
+    for (Par<Parametro,Parametro> paramPair : equalNamedParams) {
+      result += paramPair.primero().WriteDifferences(paramPair.segundo());
+    }
+
+    if (differentParams2.size() > 0) {
+      result += "Parametros sobrantes del segundo procedimiento: \n";
+      for (Parametro p : differentParams2) {
+        result += "* " + p.getName() + "\n";
+      }
+    }
+
+    return result;
+  }
 
 }
