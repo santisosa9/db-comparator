@@ -10,6 +10,6 @@ public interface DatabaseBuilder {
   
   public void setProcedures();
   
-  public Database build();
+  public Database build(String username, String password, String host, String name);
   
 }

@@ -1,0 +1,11 @@
+Tablas sobrantes de la db bdd2_ejercicio_1: 
+   * facturas_inconsistentes
+Tablas sobrantes de la db prueba: 
+   * facturita
+Columnas sobrantes de la tabla factura: 
+   * max_items
+Triggers sobrantes de la tabla itemfactura: 
+   * limit_items
+Procedimientos sobrantes de la db bdd2_ejercicio_1: 
+   * ejemplo
+   * verificar_facturas_inconsistentes

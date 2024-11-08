@@ -1,4 +1,4 @@
-package models;
+package utils;
 
 /**
 * Una tupla genérica que contiene dos datos de tipos posiblemente distintos.

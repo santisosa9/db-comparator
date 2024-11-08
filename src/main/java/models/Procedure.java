@@ -2,6 +2,8 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.Par;
+
 public class Procedure{
 
   private String nameProcedure; // Nombre del procedimiento.
@@ -72,19 +74,19 @@ public class Procedure{
     if (differentParams1.size() > 0) {
       result += "Parametros sobrantes del primer procedimiento: \n";
       for (Parametro p : differentParams1) {
-        result += "* " + p.getName() + "\n";
+        result += "   * " + p.getName() + "\n";
       }
-    }
-
-    for (Par<Parametro,Parametro> paramPair : equalNamedParams) {
-      result += paramPair.primero().WriteDifferences(paramPair.segundo());
     }
 
     if (differentParams2.size() > 0) {
       result += "Parametros sobrantes del segundo procedimiento: \n";
       for (Parametro p : differentParams2) {
-        result += "* " + p.getName() + "\n";
+        result += "   * " + p.getName() + "\n";
       }
+    }
+
+    for (Par<Parametro,Parametro> paramPair : equalNamedParams) {
+      result += paramPair.primero().WriteDifferences(paramPair.segundo());
     }
 
     return result;

@@ -44,20 +44,20 @@ public class Parametro {
 
     if (!name_param.equals(other.getName())) {
       result += "Different Names \n" +
-                "* Name of the first parameter: " + name_param + "\n" +
-                "* Name of the second parameter: " + other.getName() + "\n";
+                "   * Name of the first parameter: " + name_param + "\n" +
+                "   * Name of the second parameter: " + other.getName() + "\n";
     }
 
     if (!type_param.equals(other.getType())) {
       result += "Different Types \n" + 
-                "* Type of the first parameter: " + type_param + "\n" +
-                "* Type of the second pameter: " + other.getType() + "\n";
+                "   * Type of the first parameter: " + type_param + "\n" +
+                "   * Type of the second pameter: " + other.getType() + "\n";
     }
 
     if (!data_param.equals(other.getData())) {
-      result += "Different Dates \\n" + //
-                "* Data of the first parameter: " + data_param + "\n" +
-                "* Data of the second pameter: " + other.getData() + "\n";
+      result += "Different Dates \n" + 
+                "   * Data of the first parameter: " + data_param + "\n" +
+                "   * Data of the second pameter: " + other.getData() + "\n";
     }
 
     return result;

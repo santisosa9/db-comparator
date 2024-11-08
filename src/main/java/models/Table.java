@@ -3,6 +3,8 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.Par;
+
 public class Table {
   private String name;
   private String type;
@@ -62,8 +64,8 @@ public class Table {
     String result = "";
     if (!type.equals(other.getType())) {
       result += "Different Types \n" + 
-                "* Type of the first column: " + type  + "\n" +
-                "* Type of the second column: " + other.getType() + "\n";              
+                "   * Type of the first column: " + type  + "\n" +
+                "   * Type of the second column: " + other.getType() + "\n";              
     }
     result += getColumnsDifference(other);
     result += getTriggersDifference(other);
@@ -100,19 +102,19 @@ public class Table {
     if (differentTriggers1.size() > 0) {
       result += "Triggers sobrantes de la tabla " + name + ": \n";
       for (Trigger t : differentTriggers1) {
-        result += "* " + t.getName() + "\n";
+        result += "   * " + t.getName() + "\n";
       }
-    }
-
-    for(Par<Trigger,Trigger> par : equalNamedTriggers){
-      result += par.primero().WriteDifferences(par.segundo());
     }
 
     if (differentTriggers2.size() > 0) {
       result += "Triggers sobrantes de la tabla " + other.getName() + ": \n";
       for (Trigger t : differentTriggers2) {
-        result += "* " + t.getName() + "\n";
+        result += "   * " + t.getName() + "\n";
       }
+    }
+
+    for(Par<Trigger,Trigger> par : equalNamedTriggers){
+      result += par.primero().WriteDifferences(par.segundo());
     }
     
     return result;
@@ -147,19 +149,19 @@ public class Table {
     if (differentColumns1.size() > 0) {
       result += "Columnas sobrantes de la tabla " + name + ": \n";
       for (Column c : differentColumns1) {
-        result += "* " + c.getName() + "\n";
+        result += "   * " + c.getName() + "\n";
       }
-    }
-
-    for(Par<Column,Column> columnPair : equalNamedColumns){
-      result += columnPair.primero().WriteDifferences(columnPair.segundo());
     }
 
     if (differentColumns2.size() > 0) {
       result += "Columnas sobrantes de la tabla " + other.getName() + ": \n";
       for (Column c : differentColumns2) {
-        result += "* " + c.getName() + "\n";
+        result += "   * " + c.getName() + "\n";
       }
+    }
+
+    for(Par<Column,Column> columnPair : equalNamedColumns){
+      result += columnPair.primero().WriteDifferences(columnPair.segundo());
     }
     
     return result;

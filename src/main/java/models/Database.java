@@ -3,14 +3,25 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.Par;
+
 public class Database {
 
+  private String name;
   private List<Table> tables;
   private List<Procedure> procedures;
 
   public Database() {
     tables = new ArrayList<Table>();
     procedures = new ArrayList<Procedure>();
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public List<Table> getTables() {
@@ -40,13 +51,13 @@ public class Database {
 
   public String WriteDifferences(Database other) {
     String result = "";
-    result += getTablesDifference(other.getTables());
-    result += getProceduresDifference(other.getProcedures());
+    result += getTablesDifference(other);
+    result += getProceduresDifference(other);
     return result;
   }
 
-  private String getTablesDifference(List<Table> _otherTables) {
-    List<Table> otherTables = new ArrayList<Table>(_otherTables);
+  private String getTablesDifference(Database other) {
+    List<Table> otherTables = new ArrayList<Table>(other.getTables());
     List<Par<Table,Table>> equalNamedTables = new ArrayList<Par<Table,Table>>();
     List<Table> differentTables1 = new ArrayList<Table>();
     List<Table> differentTables2 = new ArrayList<Table>();
@@ -72,28 +83,28 @@ public class Database {
     String result = "";
     
     if (differentTables1.size() > 0) {
-      result += "Tablas sobrantes de la primera db: \n";
+      result += "Tablas sobrantes de la db " + name + ": \n";
       for (Table t : differentTables1) {
-        result += "* " + t.getName() + "\n";
+        result += "   * " + t.getName() + "\n";
       }
-    }
-    
-    for (Par<Table,Table> tablePair : equalNamedTables) {
-      result += tablePair.primero().WriteDifferences(tablePair.segundo());
     }
 
     if (differentTables2.size() > 0) {
-      result += "Tablas sobrantes de la segunda db: \n";
+      result += "Tablas sobrantes de la db " + other.getName() + ": \n";
       for (Table t : differentTables2) {
-        result += "* " + t.getName() + "\n";
+        result += "   * " + t.getName() + "\n";
       }
+    }
+
+    for (Par<Table,Table> tablePair : equalNamedTables) {
+      result += tablePair.primero().WriteDifferences(tablePair.segundo());
     }
 
     return result;
   }
 
-  private String getProceduresDifference(List<Procedure> _otherProcedures) {
-    List<Procedure> otherProcedures = new ArrayList<Procedure>(_otherProcedures);
+  private String getProceduresDifference(Database other) {
+    List<Procedure> otherProcedures = new ArrayList<Procedure>(other.getProcedures());
     List<Par<Procedure,Procedure>> equalNamedProcedures = new ArrayList<Par<Procedure,Procedure>>();
     List<Procedure> differentProcedures1 = new ArrayList<Procedure>();
     List<Procedure> differentProcedures2 = new ArrayList<Procedure>();
@@ -119,21 +130,21 @@ public class Database {
     String result = "";
 
     if (differentProcedures1.size() > 0) {
-      result += "Procedimientos sobrantes de la primera db: \n";
+      result += "Procedimientos sobrantes de la db " + name + ": \n";
       for (Procedure p : differentProcedures1) {
-        result += "* " + p.getNameProcedure() + "\n";
+        result += "   * " + p.getNameProcedure() + "\n";
       }
-    }
-    
-    for (Par<Procedure,Procedure> procedurePair : equalNamedProcedures) {
-      result += procedurePair.primero().WriteDifferences(procedurePair.segundo());
     }
 
     if (differentProcedures2.size() > 0) {
-      result += "Procedimientos sobrantes de la segunda db: \n";
+      result += "Procedimientos sobrantes de la db " + other.getName() + ": \n";
       for (Procedure p : differentProcedures2) {
-        result += "* " + p.getNameProcedure() + "\n";
+        result += "   * " + p.getNameProcedure() + "\n";
       }
+    }
+
+    for (Par<Procedure,Procedure> procedurePair : equalNamedProcedures) {
+      result += procedurePair.primero().WriteDifferences(procedurePair.segundo());
     }
 
     return result;

@@ -38,8 +38,8 @@ public class Column {
 
     if (!type.equals(other.getType())) {
       result += "Different Types \n" + 
-                "* Type of the first column:" + type + "\n" +
-                "* Type of the second column:" + other.getType() + "\n";               
+                "   * Type of the first column:" + type + "\n" +
+                "   * Type of the second column:" + other.getType() + "\n";               
     }
 
     return result;

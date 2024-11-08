@@ -35,14 +35,14 @@ public class Trigger {
 
     if (!triggerEvent.equals(other.getTriggerEvent())) {
       result += "Different Trigger Events \n" + 
-                "* Event of the first trigger:" + triggerEvent + "\n" +
-                "* Event of the second trigger:" + other.getTriggerEvent() + "\n";                
+                "   * Event of the first trigger:" + triggerEvent + "\n" +
+                "   * Event of the second trigger:" + other.getTriggerEvent() + "\n";                
     }
     
     if (!triggerTiming.equals(other.getTriggerTiming())) {
       result += "Different Trigger Timings \n" + 
-                "* Timing of the first trigger:" + triggerEvent + "\n" +
-                "* Timing of the second trigger:" + other.getTriggerTiming() + "\n";                 
+                "   * Timing of the first trigger:" + triggerEvent + "\n" +
+                "   * Timing of the second trigger:" + other.getTriggerTiming() + "\n";                 
     }
     
     return result;

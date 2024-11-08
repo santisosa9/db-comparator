@@ -17,8 +17,7 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
   private Database database;
   private DatabaseConnection dbConnection;
 
-  public MySqlDatabaseBuilder(String username, String password, String host, String name) {
-    this.dbConnection = new MySqlDatabaseConnection(username, password, host, name); 
+  public MySqlDatabaseBuilder() {
     this.reset();
   }
 
@@ -151,11 +150,13 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
   }
 
   @Override
-  public Database build() {
+  public Database build(String username, String password, String host, String name) {
+    this.dbConnection = new MySqlDatabaseConnection(username, password, host, name); 
     setTables();
     setProcedures();
     Database result = this.database;
     this.reset(); 
+    result.setName(name);
     return result;
   }
 
