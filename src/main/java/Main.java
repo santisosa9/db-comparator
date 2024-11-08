@@ -6,7 +6,6 @@ import builder.MySqlDatabaseBuilder;
 import models.Database;
 import models.Procedure;
 import models.Table;
-import models.Trigger;
 import models.Par;
 
 public class Main {
@@ -52,16 +51,18 @@ public class Main {
     //Agregamos las tablas que faltan de la db2, las que tienen nombre igual ya fueron eliminadas
     notequalTables.addAll(tablesdb2);
     
-    String TableComparison= "Comparacion de tablas iguales:  \\n";
+    String TableComparison = "Comparacion de tablas iguales:  \\n";
     //Ciclado de tablas iguales
     for(Par<Table,Table> tables : equalNamedTables){
-      TableComparison= TableComparison + tables.primero().WriteDifferences(tables.segundo());
+      TableComparison += tables.primero().WriteDifferences(tables.segundo());
     }
 
-    TableComparison= TableComparison + "Tablas sobrantes: \\n";
-    for(Table table : notequalTables){
-      TableComparison= TableComparison + table.toString();
+    TableComparison += "Tablas sobrantes: \\n";
+    for (Table table : notequalTables) {
+      TableComparison += table.toString();
     }
+
+    System.out.println(TableComparison);
 
     List<Procedure> proceduresdb1 = db1.getProcedures();
     List<Procedure> proceduresdb2 = db2.getProcedures();
