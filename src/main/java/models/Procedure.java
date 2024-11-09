@@ -68,14 +68,17 @@ public class Procedure{
     String result = "";
     
     if (differentParams1.size() > 0) {
-      result += "Parametros adicionales del procedimiento '" + schema + "." + nameProcedure + "': \n";
+      result += "- **Parametros adicionales del procedimiento `" + schema + "." + nameProcedure + "`:** \n";
       for (Parametro p : differentParams1) {
         result += "   * " + p.getName() + "\n";
       }
     }
 
+    result = result + "\n";
+
+
     if (differentParams2.size() > 0) {
-      result += "Parametros adicionales del procedimiento '" + other.getSchema() + "." + other.getNameProcedure() + "': \n";
+      result += "- **Parametros adicionales del procedimiento `" + other.getSchema() + "." + other.getNameProcedure() + "`:** \n";
       for (Parametro p : differentParams2) {
         result += "   * " + p.getName() + "\n";
       }

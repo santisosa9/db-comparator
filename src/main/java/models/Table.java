@@ -112,14 +112,16 @@ public class Table {
     String result = "";
 
     if (differentPrimaryKeys1.size() > 0) {
-      result += "Claves primarias adicionales en '" + schema + "." + name + "': \n";
+      result += "**Claves primarias adicionales en `" + schema + "." + name + "`:** \n";
       for (Column c : differentPrimaryKeys1) {
         result += "   * " + c.getName() + "\n";
       }
     }
 
+    result = result + "\n";
+
     if (differentPrimaryKeys2.size() > 0) {
-      result += "Claves primarias adicionales en '" + other.getSchema() + "." + other.getName() + "': \n";
+      result += "**Claves primarias adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Column c : differentPrimaryKeys2) {
         result += "   * " + c.getName() + "\n";
       }
@@ -159,14 +161,16 @@ public class Table {
     String result = "";
 
     if (differentUniqueKeys1.size() > 0) {
-      result += "Claves únicas adicionales en '" + schema + "." + name + "': \n";
+      result += "**Claves únicas adicionales en `" + schema + "." + name + "`:** \n";
       for (Column c : differentUniqueKeys1) {
         result += "   * " + c.getName() + "\n";
       }
     }
 
+    result = result + "\n";
+
     if (differentUniqueKeys2.size() > 0) {
-      result += "Claves únicas adicionales en '" + other.getSchema() + "." + other.getName() + "': \n";
+      result += "**Claves únicas adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Column c : differentUniqueKeys2) {
         result += "   * " + c.getName() + "\n";
       }
@@ -206,14 +210,16 @@ public class Table {
     String result = "";
 
     if (differentForeignKeys1.size() > 0) {
-      result += "Claves foraneas adicionales en '" + schema + "." + name + "': \n";
+      result += "**Claves foraneas adicionales en `" + schema + "." + name + "`:** \n";
       for (Column c : differentForeignKeys1) {
         result += "   * " + c.getName() + "\n";
       }
     }
 
+    result = result + "\n";
+
     if (differentForeignKeys2.size() > 0) {
-      result += "Claves foraneas adicionales en '" + other.getSchema() + "." + other.getName() + "': \n";
+      result += "**Claves foraneas adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Column c : differentForeignKeys2) {
         result += "   * " + c.getName() + "\n";
       }
@@ -254,14 +260,16 @@ public class Table {
 
     
     if (differentTriggers1.size() > 0) {
-      result += "Triggers adicionales en '" + schema + "." + name + "': \n";
+      result += "**Triggers adicionales en `" + schema + "." + name + "`:** \n";
       for (Trigger t : differentTriggers1) {
         result += "   * " + t.getName() + "\n";
       }
     }
 
+    result = result + "\n";
+
     if (differentTriggers2.size() > 0) {
-      result += "Triggers adicionales en '" + other.getSchema() + "." + other.getName() + "': \n";
+      result += "**Triggers adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Trigger t : differentTriggers2) {
         result += "   * " + t.getName() + "\n";
       }
@@ -301,14 +309,16 @@ public class Table {
     String result = "";
 
     if (differentColumns1.size() > 0) {
-      result += "Columnas adicionales en '" + schema + "." + name + "': \n";
+      result += "**Columnas adicionales en `" + schema + "." + name + "`:** \n";
       for (Column c : differentColumns1) {
         result += "   * " + c.getName() + "\n";
       }
     }
 
+    result = result + "\n";
+
     if (differentColumns2.size() > 0) {
-      result += "Columnas adicionales en '" + other.getSchema() + "." + other.getName() + "': \n";
+      result += "**Columnas adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Column c : differentColumns2) {
         result += "   * " + c.getName() + "\n";
       }
@@ -348,14 +358,16 @@ public class Table {
     String result = "";
 
     if (differentIndexs1.size() > 0) {
-      result += "Indices adicionales en '" + schema + "." + name + "': \n";
+      result += "**Indices adicionales en `" + schema + "." + name + "`**: \n";
       for (Index i : differentIndexs1) {
         result += "   * " + i.getName() + "\n";
       }
     }
 
+    result = result + "\n";
+
     if (differentIndexs2.size() > 0) {
-      result += "Indices adicionales en '" + other.getSchema() + "." + other.getName() + "': \n";
+      result += "**Indices adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Index i : differentIndexs2) {
         result += "   * " + i.getName() + "\n";
       }

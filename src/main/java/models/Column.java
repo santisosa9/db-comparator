@@ -40,7 +40,7 @@ public class Column {
   public String WriteDifferences(Column other, String obj) {
     String result = "";
     if (!type.equals(other.getType())) {
-      result += "La " + obj + " '" + name + "' de la tabla en común '" + table + "' tiene tipos distintos: \n" + 
+      result += "**La " + obj + " `" + name + "` de la tabla en común `" + table + "` tiene tipos distintos:** \n" + 
                 "   * ("  + type + ", " + other.getType() + ")\n";              
     }
     return result;

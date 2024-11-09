@@ -80,17 +80,19 @@ public class Database {
     }
     differentTables2.addAll(otherTables);
     
-    String result = "";
+    String result = "\n";
     
     if (differentTables1.size() > 0) {
-      result += "Tablas adicionales en '" + name + "': \n";
+      result += "**Tablas adicionales en `" + name + "`:** \n";
       for (Table t : differentTables1) {
         result += "   * " + t.getName() + "\n";
       }
     }
 
+    result = result + "\n";
+
     if (differentTables2.size() > 0) {
-      result += "Tablas adicionales en '" + other.getName() + "': \n";
+      result += "**Tablas adicionales en `" + other.getName() + "`:** \n";
       for (Table t : differentTables2) {
         result += "   * " + t.getName() + "\n";
       }
@@ -127,17 +129,19 @@ public class Database {
     }
     differentProcedures2.addAll(otherProcedures);
 
-    String result = "";
+    String result = "\n";
 
     if (differentProcedures1.size() > 0) {
-      result += "Procedimientos adicionales en '" + name + "': \n";
+      result += "**Procedimientos adicionales en `" + name + "`:** \n";
       for (Procedure p : differentProcedures1) {
         result += "   * " + p.getNameProcedure() + "\n";
       }
     }
 
+    result = result + "\n";
+
     if (differentProcedures2.size() > 0) {
-      result += "Procedimientos adicionales en '" + other.getName() + "': \n";
+      result += "**Procedimientos adicionales en `" + other.getName() + "`:** \n";
       for (Procedure p : differentProcedures2) {
         result += "   * " + p.getNameProcedure() + "\n";
       }

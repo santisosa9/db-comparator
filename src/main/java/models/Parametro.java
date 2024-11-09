@@ -32,12 +32,14 @@ public class Parametro {
     String result = "";
 
     if (!type_param.equals(other.getType())) {
-      result += "El parametro '" + name_param + "' del procedimiento '" + procedure + "' tiene tipos distintos: \n" + 
+      result += "**El parametro `" + name_param + "` del procedimiento `" + procedure + "` tiene direcciones distintas:** \n" + 
                 "   * ("  + type_param + ", " + other.getType() + ")\n";        
     }
 
+    result = result + "\n";
+
     if (!data_param.equals(other.getData())) {
-      result += "El parametro '" + name_param + "' del procedimiento '" + procedure + "' tiene direcciones distintas: \n" + 
+      result += "**El parametro `" + name_param + "` del procedimiento `" + procedure + "` tiene tipos distintos:** \n" + 
                 "   * ("  + data_param + ", " + other.getData() + ")\n"; 
     }
 

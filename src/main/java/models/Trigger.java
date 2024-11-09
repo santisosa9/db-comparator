@@ -36,12 +36,14 @@ public class Trigger {
     String result = "";
 
     if (!triggerEvent.equals(other.getTriggerEvent())) {
-      result += "El trigger '" + name + "' de la tabla '" + table + "' tiene eventos de disparo distintos: \n" + 
+      result += "**El trigger `" + name + "` de la tabla `" + table + "` tiene eventos de disparo distintos:** \n" + 
                 "   * (" + triggerEvent + ", " + other.getTriggerEvent() + ")\n";      
     }
+
+    result = result + "\n";
     
     if (!triggerTiming.equals(other.getTriggerTiming())) {
-      result += "El trigger '" + name + "' de la tabla '" + table + "' tiene tiempos de disparo distintos: \n" + 
+      result += "**El trigger `" + name + "` de la tabla `" + table + "` tiene tiempos de disparo distintos:** \n" + 
                 "   * (" + triggerTiming + ", " + other.getTriggerTiming() + ")\n";                    
     }
     
