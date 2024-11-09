@@ -4,12 +4,13 @@ package models;
  * La clase Parametro tendra la informacion de los parametros de los procedimientos.
  */
 public class Parametro {
-
+  private String procedure; // Nombre del procedimiento al que pertenece
   private String name_param; // Nombre del parametro.
   private String type_param; // Tipo de entrada del parametro. 
   private String data_param; // Tipo de dato del parametro.
 
-  public Parametro(String name, String type, String data) {
+  public Parametro(String procedure, String name, String type, String data) {
+    this.procedure = procedure;
     name_param = name;
     type_param = type;
     data_param = data;
@@ -27,37 +28,17 @@ public class Parametro {
     return data_param;
   }
 
-  public void setName(String new_name) {
-    this.name_param = new_name;
-  }
-
-  public void setType(String new_type) {
-    this.type_param = new_type;
-  }
-
-  public void setData(String new_data) {
-    this.data_param = new_data;
-  }
-
   public String WriteDifferences(Parametro other){
     String result = "";
 
-    if (!name_param.equals(other.getName())) {
-      result += "Different Names \n" +
-                "   * Name of the first parameter: " + name_param + "\n" +
-                "   * Name of the second parameter: " + other.getName() + "\n";
-    }
-
     if (!type_param.equals(other.getType())) {
-      result += "Different Types \n" + 
-                "   * Type of the first parameter: " + type_param + "\n" +
-                "   * Type of the second pameter: " + other.getType() + "\n";
+      result += "El parametro '" + name_param + "' del procedimiento '" + procedure + "' tiene tipos distintos: \n" + 
+                "   * ("  + type_param + ", " + other.getType() + ")\n";        
     }
 
     if (!data_param.equals(other.getData())) {
-      result += "Different Dates \n" + 
-                "   * Data of the first parameter: " + data_param + "\n" +
-                "   * Data of the second pameter: " + other.getData() + "\n";
+      result += "El parametro '" + name_param + "' del procedimiento '" + procedure + "' tiene direcciones distintas: \n" + 
+                "   * ("  + data_param + ", " + other.getData() + ")\n"; 
     }
 
     return result;

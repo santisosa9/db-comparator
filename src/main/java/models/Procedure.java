@@ -5,11 +5,12 @@ import java.util.List;
 import utils.Par;
 
 public class Procedure{
-
+  private String schema; // Nombre de la db a la que pertenece
   private String nameProcedure; // Nombre del procedimiento.
   private ArrayList<Parametro> params; // Parametros del procedimiento.
 
-  public Procedure(String name,ArrayList<Parametro> params_param){
+  public Procedure(String schema, String name,ArrayList<Parametro> params_param){
+    this.schema = schema;
     nameProcedure = name;
     params = params_param;
   }
@@ -18,17 +19,12 @@ public class Procedure{
     return nameProcedure;
   }
 
-  public void setNameProcedure(String new_name){
-    nameProcedure = new_name;
-  }
-
   public ArrayList<Parametro> getParams(){
     return params;
   }
 
-  public void setParams(String name,String tpye,String data){
-    Parametro param = new Parametro(name,tpye,data);
-    params.add(param);
+  public String getSchema() {
+    return schema;
   }
 
   @Override
@@ -41,12 +37,12 @@ public class Procedure{
 
   public String WriteDifferences(Procedure other){
     String result = "";
-    result += getParamsDifference(other.getParams());
+    result += getParamsDifference(other);
     return result;
   }
 
-  private String getParamsDifference(List<Parametro> _otherParams) {
-    List<Parametro> otherParams = new ArrayList<Parametro>(_otherParams);
+  private String getParamsDifference(Procedure other) {
+    List<Parametro> otherParams = new ArrayList<Parametro>(other.getParams());
     List<Par<Parametro,Parametro>> equalNamedParams = new ArrayList<Par<Parametro,Parametro>>();
     List<Parametro> differentParams1 = new ArrayList<Parametro>();
     List<Parametro> differentParams2 = new ArrayList<Parametro>();
@@ -72,14 +68,14 @@ public class Procedure{
     String result = "";
     
     if (differentParams1.size() > 0) {
-      result += "Parametros sobrantes del primer procedimiento: \n";
+      result += "Parametros adicionales del procedimiento '" + schema + "." + nameProcedure + "': \n";
       for (Parametro p : differentParams1) {
         result += "   * " + p.getName() + "\n";
       }
     }
 
     if (differentParams2.size() > 0) {
-      result += "Parametros sobrantes del segundo procedimiento: \n";
+      result += "Parametros adicionales del procedimiento '" + other.getSchema() + "." + other.getNameProcedure() + "': \n";
       for (Parametro p : differentParams2) {
         result += "   * " + p.getName() + "\n";
       }

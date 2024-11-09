@@ -9,10 +9,10 @@ public class Main {
   
   public static void main(String[] args) {
     
-    String username = "root";
-    String password = "root";
-    String host = "localhost:3306";
-    String databaseName = "practico1";
+    String username = "santi";
+    String password = "pass";
+    String host = "192.168.1.7:3306";
+    String databaseName = "bdd2_ejercicio_1";
 
     DatabaseBuilder dbBuilder = new MySqlDatabaseBuilder();
     Database db1 = dbBuilder.build(username, password, host, databaseName);

@@ -56,7 +56,7 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
               String columnName = resultSetColumns.getString("COLUMN_NAME");
               String dataType = resultSetColumns.getString("DATA_TYPE");
               String columnKey = resultSetColumns.getString("COLUMN_KEY");
-              Column column = new Column(columnName,dataType,columnKey);
+              Column column = new Column(tableName, columnName, dataType, columnKey);
               //If its foreign key
               if(column.getColumnKey() == "MUL"){
                 ForeignkeyColumns.add(column);
@@ -77,7 +77,8 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
           }
           
           List<Trigger> triggers = getTriggers(tableName);
-          Table table = new Table(tableName,tableType,resultColumns,triggers,PrimarykeyColumns,UniquekeyColumns,ForeignkeyColumns);
+          List<Index> indexs = getIndexs(tableName);
+          Table table = new Table(connection.getCatalog(), tableName, tableType, resultColumns, triggers, PrimarykeyColumns, UniquekeyColumns, ForeignkeyColumns, indexs);
           result.add(table);
         }
         resultSetTables.close();
@@ -106,11 +107,40 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
           String triggerEvent = resultSetTriggers.getString("TRIGGER_EVENT");
           String triggerTiming = resultSetTriggers.getString("TRIGGER_TIMING");
           
-          Trigger trigger = new Trigger(triggerName, triggerEvent, triggerTiming);
+          Trigger trigger = new Trigger(tableName, triggerName, triggerEvent, triggerTiming);
           result.add(trigger);
         }
 
         resultSetTriggers.close();
+      } 
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return result;
+  }
+
+  private List<Index> getIndexs(String tableName) { 
+    List<Index> result = new ArrayList<Index>();
+    try (Connection connection = dbConnection.connect()) {
+      String query = "SELECT INDEX_NAME, COLUMN_NAME, INDEX_TYPE FROM information_schema.STATISTICS " +
+                    "WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
+
+      try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setString(1, connection.getCatalog()); 
+        preparedStatement.setString(2, tableName); 
+
+        ResultSet resultSetIndexs = preparedStatement.executeQuery();
+
+        while (resultSetIndexs.next()) {
+          String name = resultSetIndexs.getString("INDEX_NAME");
+          String columnName = resultSetIndexs.getString("COLUMN_NAME");
+          String type = resultSetIndexs.getString("INDEX_TYPE");
+          
+          Index index = new Index(tableName, name, columnName, type);
+          result.add(index);
+        }
+
+        resultSetIndexs.close();
       } 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -143,7 +173,7 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
                 String nameParam = resultSetParams.getString("PARAMETER_NAME");
                 String inputParam = resultSetParams.getString("PARAMETER_MODE");
                 String dataParam = resultSetParams.getString("DATA_TYPE");
-                Parametro param = new Parametro(nameParam, inputParam, dataParam);
+                Parametro param = new Parametro(routineName, nameParam, inputParam, dataParam);
                 parametros.add(param);
               }
             resultSetParams.close();
@@ -151,7 +181,7 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
           } catch (SQLException e){
             e.printStackTrace();
           }
-          Procedure routine = new Procedure(routineName,parametros);
+          Procedure routine = new Procedure(connection.getCatalog(),routineName,parametros);
           list.add(routine);
         }
         resultSetRoutine.close();
@@ -161,8 +191,6 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
     } catch (SQLException e){
       e.printStackTrace();
     }
-    // Aca va la lógica para obtener los procedimientos en mysql
-    // this.database.setProcedures(procedures);
   }
 
   @Override

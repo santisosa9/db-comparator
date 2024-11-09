@@ -1,11 +1,13 @@
 package models;
 
 public class Trigger {
+  private String table;
   private String name;
   private String triggerEvent;               
   private String triggerTiming; 
 
-  public Trigger(String name, String triggerEvent, String triggerTiming) {
+  public Trigger(String table, String name, String triggerEvent, String triggerTiming) {
+    this.table = table;
     this.name = name;
     this.triggerEvent = triggerEvent;
     this.triggerTiming = triggerTiming;
@@ -34,15 +36,13 @@ public class Trigger {
     String result = "";
 
     if (!triggerEvent.equals(other.getTriggerEvent())) {
-      result += "Different Trigger Events \n" + 
-                "   * Event of the first trigger:" + triggerEvent + "\n" +
-                "   * Event of the second trigger:" + other.getTriggerEvent() + "\n";                
+      result += "El trigger '" + name + "' de la tabla '" + table + "' tiene eventos de disparo distintos: \n" + 
+                "   * (" + triggerEvent + ", " + other.getTriggerEvent() + ")\n";      
     }
     
     if (!triggerTiming.equals(other.getTriggerTiming())) {
-      result += "Different Trigger Timings \n" + 
-                "   * Timing of the first trigger:" + triggerEvent + "\n" +
-                "   * Timing of the second trigger:" + other.getTriggerTiming() + "\n";                 
+      result += "El trigger '" + name + "' de la tabla '" + table + "' tiene tiempos de disparo distintos: \n" + 
+                "   * (" + triggerTiming + ", " + other.getTriggerTiming() + ")\n";                    
     }
     
     return result;

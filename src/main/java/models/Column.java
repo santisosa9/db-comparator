@@ -1,14 +1,16 @@
 package models;
 
 public class Column {
-    private String name;
-    private String type;
-    private String columnKey; //PRI: Primary Key, UNI: UNIQUE, MUL: Foreign key or multiple index, null: No key constraint
-    
-    public Column(String name, String type,String columnKey) {
-      this.name = name;
-      this.type = type;
-      this.columnKey = columnKey;
+  private String table;
+  private String name;
+  private String type;
+  private String columnKey; //PRI: Primary Key, UNI: UNIQUE, MUL: Foreign key or multiple index, null: No key constraint
+  
+  public Column(String table, String name, String type,String columnKey) {
+    this.table = table;
+    this.name = name;
+    this.type = type;
+    this.columnKey = columnKey;
   }
     
   public String getName() {
@@ -19,23 +21,12 @@ public class Column {
     return type;
   }
 
-
   public String getColumnKey() {
     return columnKey;
   }
 
-
-  public void setName(String newName) {
-    this.name = newName;
-  }
-
-  public void setType(String newType) {
-    this.type = newType;
-  }
-
-
-  public void setColumnKey(String columnKey) {
-    this.columnKey = columnKey;
+  public String getTable() {
+    return table;
   }
 
   @Override
@@ -46,15 +37,12 @@ public class Column {
     return name.equals(other.getName()) && type.equals(other.getType());
   }
 
-  public String WriteDifferences(Column other) {
+  public String WriteDifferences(Column other, String obj) {
     String result = "";
-
     if (!type.equals(other.getType())) {
-      result += "Different Types \n" + 
-                "   * Type of the first column:" + type + "\n" +
-                "   * Type of the second column:" + other.getType() + "\n";               
+      result += "La " + obj + " '" + name + "' de la tabla en común '" + table + "' tiene tipos distintos: \n" + 
+                "   * ("  + type + ", " + other.getType() + ")\n";              
     }
-
     return result;
   }
 

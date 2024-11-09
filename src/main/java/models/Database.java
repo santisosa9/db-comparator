@@ -83,14 +83,14 @@ public class Database {
     String result = "";
     
     if (differentTables1.size() > 0) {
-      result += "Tablas sobrantes de la db " + name + ": \n";
+      result += "Tablas adicionales en '" + name + "': \n";
       for (Table t : differentTables1) {
         result += "   * " + t.getName() + "\n";
       }
     }
 
     if (differentTables2.size() > 0) {
-      result += "Tablas sobrantes de la db " + other.getName() + ": \n";
+      result += "Tablas adicionales en '" + other.getName() + "': \n";
       for (Table t : differentTables2) {
         result += "   * " + t.getName() + "\n";
       }
@@ -130,14 +130,14 @@ public class Database {
     String result = "";
 
     if (differentProcedures1.size() > 0) {
-      result += "Procedimientos sobrantes de la db " + name + ": \n";
+      result += "Procedimientos adicionales en '" + name + "': \n";
       for (Procedure p : differentProcedures1) {
         result += "   * " + p.getNameProcedure() + "\n";
       }
     }
 
     if (differentProcedures2.size() > 0) {
-      result += "Procedimientos sobrantes de la db " + other.getName() + ": \n";
+      result += "Procedimientos adicionales en '" + other.getName() + "': \n";
       for (Procedure p : differentProcedures2) {
         result += "   * " + p.getNameProcedure() + "\n";
       }
