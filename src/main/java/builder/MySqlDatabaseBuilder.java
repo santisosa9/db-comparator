@@ -58,15 +58,15 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
               String columnKey = resultSetColumns.getString("COLUMN_KEY");
               Column column = new Column(tableName, columnName, dataType, columnKey);
               //If its foreign key
-              if(column.getColumnKey() == "MUL"){
+              if (columnKey.equals("MUL")){
                 ForeignkeyColumns.add(column);
               }
               //If its primary key
-              if(column.getColumnKey() == "PRI"){
+              if (columnKey.equals("PRI")){
                 PrimarykeyColumns.add(column);
               }  
               //If its Unique key
-              if(column.getColumnKey() == "UNI"){
+              if (columnKey.equals("UNI")){
                 UniquekeyColumns.add(column);
               }    
               resultColumns.add(column);
@@ -75,7 +75,6 @@ public class MySqlDatabaseBuilder implements DatabaseBuilder {
           }catch (SQLException e) {
             e.printStackTrace();
           }
-          
           List<Trigger> triggers = getTriggers(tableName);
           List<Index> indexs = getIndexs(tableName);
           Table table = new Table(connection.getCatalog(), tableName, tableType, resultColumns, triggers, PrimarykeyColumns, UniquekeyColumns, ForeignkeyColumns, indexs);
