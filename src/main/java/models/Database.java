@@ -80,7 +80,7 @@ public class Database {
     }
     differentTables2.addAll(otherTables);
     
-    String result = "\n";
+    String result = "";
     
     if (differentTables1.size() > 0) {
       result += "**Tablas adicionales en `" + name + "`:** \n";
@@ -129,7 +129,7 @@ public class Database {
     }
     differentProcedures2.addAll(otherProcedures);
 
-    String result = "\n";
+    String result = "";
 
     if (differentProcedures1.size() > 0) {
       result += "**Procedimientos adicionales en `" + name + "`:** \n";

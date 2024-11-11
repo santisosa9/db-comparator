@@ -165,15 +165,15 @@ public class Table {
       for (Column c : differentUniqueKeys1) {
         result += "   * " + c.getName() + "\n";
       }
+      result += "\n";
     }
-
-    result = result + "\n";
 
     if (differentUniqueKeys2.size() > 0) {
       result += "**Claves únicas adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Column c : differentUniqueKeys2) {
         result += "   * " + c.getName() + "\n";
       }
+      result += "\n";
     }
 
     for(Par<Column,Column> keysPair : equalNamedUniqueKeys){
@@ -214,15 +214,15 @@ public class Table {
       for (Column c : differentForeignKeys1) {
         result += "   * " + c.getName() + "\n";
       }
+      result += "\n";
     }
-
-    result = result + "\n";
 
     if (differentForeignKeys2.size() > 0) {
       result += "**Claves foraneas adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Column c : differentForeignKeys2) {
         result += "   * " + c.getName() + "\n";
       }
+      result += "\n";
     }
 
     for(Par<Column,Column> keysPair : equalNamedForeignKeys){
@@ -264,15 +264,15 @@ public class Table {
       for (Trigger t : differentTriggers1) {
         result += "   * " + t.getName() + "\n";
       }
+      result += "\n";
     }
-
-    result = result + "\n";
 
     if (differentTriggers2.size() > 0) {
       result += "**Triggers adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Trigger t : differentTriggers2) {
         result += "   * " + t.getName() + "\n";
       }
+      result += "\n";
     }
 
     for(Par<Trigger,Trigger> par : equalNamedTriggers){
@@ -313,15 +313,15 @@ public class Table {
       for (Column c : differentColumns1) {
         result += "   * " + c.getName() + "\n";
       }
+      result += "\n";
     }
-
-    result = result + "\n";
 
     if (differentColumns2.size() > 0) {
       result += "**Columnas adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Column c : differentColumns2) {
         result += "   * " + c.getName() + "\n";
       }
+      result += "\n";
     }
 
     for(Par<Column,Column> columnPair : equalNamedColumns){
@@ -358,19 +358,19 @@ public class Table {
     String result = "";
 
     if (differentIndexs1.size() > 0) {
-      result += "**Indices adicionales en `" + schema + "." + name + "`**: \n";
+      result += "**Indices adicionales en `" + schema + "." + name + "`:** \n";
       for (Index i : differentIndexs1) {
         result += "   * " + i.getName() + "\n";
       }
+      result += "\n";
     }
-
-    result = result + "\n";
 
     if (differentIndexs2.size() > 0) {
       result += "**Indices adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Index i : differentIndexs2) {
         result += "   * " + i.getName() + "\n";
       }
+      result += "\n";
     }
 
     for (Par<Index,Index> par : equalNamedIndexs) {

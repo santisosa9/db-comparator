@@ -41,7 +41,7 @@ public class Column {
     String result = "";
     if (!type.equals(other.getType())) {
       result += "**La " + obj + " `" + name + "` de la tabla en común `" + table + "` tiene tipos distintos:** \n" + 
-                "   * ("  + type + ", " + other.getType() + ")\n";              
+                "   * ("  + type + ", " + other.getType() + ")\n\n";              
     }
     return result;
   }

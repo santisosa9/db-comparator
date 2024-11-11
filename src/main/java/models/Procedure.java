@@ -75,8 +75,6 @@ public class Procedure{
       result = result + "\n";
     }
 
-
-
     if (differentParams2.size() > 0) {
       result += "- **Parametros adicionales del procedimiento `" + other.getSchema() + "." + other.getNameProcedure() + "`:** \n";
       for (Parametro p : differentParams2) {

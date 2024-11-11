@@ -39,14 +39,12 @@ public class Index {
 
     if (!columnName.equals(other.getColumnName())) {
       result += "**El indice `" + name + "` de la tabla en común `" + table + "` esta asociado a columnas distintas:** \n" + 
-              "   * ("  + columnName + ", " + other.getColumnName() + ")\n";       
+              "   * ("  + columnName + ", " + other.getColumnName() + ")\n\n";       
     }
-
-    result = result + "\n";
 
     if (!type.equals(other.getType())) {
       result += "**El indice `" + name + "` de la tabla en común `" + table + "` tiene estructuras distintas:** \n" + 
-                "   * ("  + columnName + ", " + other.getColumnName() + ")\n";                   
+                "   * ("  + columnName + ", " + other.getColumnName() + ")\n\n";                   
     }
     
     return result;
