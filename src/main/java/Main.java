@@ -3,22 +3,17 @@ import java.io.IOException;
 
 import builder.DatabaseBuilder;
 import builder.MySqlDatabaseBuilder;
+import config.Config;
 import models.Database;
 
 public class Main {
   
   public static void main(String[] args) {
-    
-    String username = "root";
-    String password = "root";
-    String host = "localhost:3306";
-    String databaseName = "estacionamiento";
-
+    Config config = new Config("config/input.properties");
     DatabaseBuilder dbBuilder = new MySqlDatabaseBuilder();
-    Database db1 = dbBuilder.build(username, password, host, databaseName);
-    Database db2 = dbBuilder.build(username, password, host, "practico1");
+    Database db1 = dbBuilder.build(config.getUser1(), config.getPassword1(), config.getHost1(), config.getDb1());
+    Database db2 = dbBuilder.build(config.getUser2(), config.getPassword2(), config.getHost2(), config.getDb2());
 
-    System.out.println(db1.equals(db2));
     try (FileWriter writer = new FileWriter("report.md")) { 
       writer.write(db1.WriteDifferences(db2));
     } catch (IOException e) {

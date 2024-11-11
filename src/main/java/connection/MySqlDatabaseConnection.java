@@ -21,7 +21,7 @@ public class MySqlDatabaseConnection implements DatabaseConnection {
 
   public Connection connect() throws SQLException {
 
-    Config config = new Config();
+    Config config = new Config("config/mysql.properties");
 
     try {
       String driver = config.getDriver();
