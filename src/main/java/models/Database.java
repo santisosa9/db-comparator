@@ -87,15 +87,15 @@ public class Database {
       for (Table t : differentTables1) {
         result += "   * " + t.getName() + "\n";
       }
+      result = result + "\n";
     }
-
-    result = result + "\n";
 
     if (differentTables2.size() > 0) {
       result += "**Tablas adicionales en `" + other.getName() + "`:** \n";
       for (Table t : differentTables2) {
         result += "   * " + t.getName() + "\n";
       }
+      result = result + "\n";
     }
 
     for (Par<Table,Table> tablePair : equalNamedTables) {
@@ -136,15 +136,15 @@ public class Database {
       for (Procedure p : differentProcedures1) {
         result += "   * " + p.getNameProcedure() + "\n";
       }
+      result = result + "\n";
     }
-
-    result = result + "\n";
 
     if (differentProcedures2.size() > 0) {
       result += "**Procedimientos adicionales en `" + other.getName() + "`:** \n";
       for (Procedure p : differentProcedures2) {
         result += "   * " + p.getNameProcedure() + "\n";
       }
+      result = result + "\n";
     }
 
     for (Par<Procedure,Procedure> procedurePair : equalNamedProcedures) {

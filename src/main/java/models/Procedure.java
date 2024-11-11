@@ -72,9 +72,9 @@ public class Procedure{
       for (Parametro p : differentParams1) {
         result += "   * " + p.getName() + "\n";
       }
+      result = result + "\n";
     }
 
-    result = result + "\n";
 
 
     if (differentParams2.size() > 0) {
@@ -82,6 +82,7 @@ public class Procedure{
       for (Parametro p : differentParams2) {
         result += "   * " + p.getName() + "\n";
       }
+      result = result + "\n";
     }
 
     for (Par<Parametro,Parametro> paramPair : equalNamedParams) {

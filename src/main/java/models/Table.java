@@ -116,15 +116,15 @@ public class Table {
       for (Column c : differentPrimaryKeys1) {
         result += "   * " + c.getName() + "\n";
       }
+      result = result + "\n";
     }
-
-    result = result + "\n";
 
     if (differentPrimaryKeys2.size() > 0) {
       result += "**Claves primarias adicionales en `" + other.getSchema() + "." + other.getName() + "`:** \n";
       for (Column c : differentPrimaryKeys2) {
         result += "   * " + c.getName() + "\n";
       }
+      result = result + "\n";
     }
 
     for(Par<Column,Column> keysPair : equalNamedPrimaryKeys){
