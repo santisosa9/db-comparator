@@ -5,7 +5,6 @@ DB Comparator es una herramienta diseñada para comparar de manera estructural d
 #### Configuración de Conexión
 Antes de ejecutar la herramienta, añade la información de conexión de las bases de datos en el archivo de configuración `input.properties`, ubicado en el directorio `src/main/resources/config`.
 
-Añadir datos para la conexión a las bases de datos en el archivo `input.properties` ubicado en `src/main/resources/config`.
 
 #### Ejecución
 Para ejecutar usando maven: `mvn clean compile exec:java -Dexec.mainClass="Main"`
